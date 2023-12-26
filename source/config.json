@@ -1,0 +1,17 @@
+{
+    "url_prefix" : "/fs",
+    "storages" : [
+        {
+            "name" : "test",
+            "path" : "/home/user/MyProject/FileServer/test",
+            "write_permissions" : "all",
+            "read_permissions" : "all"
+        },
+        {
+            "name" : "project",
+            "path" : "/home/user/MyProject/FileServer",
+            "write_permissions" : "none",
+            "read_permissions" : "all"
+        }
+    ]
+}
