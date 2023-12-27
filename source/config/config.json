@@ -3,7 +3,7 @@
     "storages" : [
         {
             "name" : "test",
-            "path" : "/home/user/MyProject/FileServer/test",
+            "path" : "/home/user/MyProject/FileServer/docker_app/data",
             "write_permissions" : "all",
             "read_permissions" : "all"
         },

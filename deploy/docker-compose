@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  fileserver:
+    container_name: fileserver
+    image: fileserver:latest
+    volumes:
+       - ./config:/fileserver/config
+       - ./data:/fileserver/data
+    restart: always

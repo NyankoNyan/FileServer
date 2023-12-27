@@ -11,7 +11,7 @@ class Storage:
         self.path = path
 
 
-config_path = os.getenv('FS_CONFIG', 'config.json')
+config_path = os.getenv('FS_CONFIG', 'config/config.json')
 with open(config_path) as f:
     config = json.load(f)
 storages = {c['name']: Storage(c['name'], c['path'])
@@ -19,6 +19,12 @@ storages = {c['name']: Storage(c['name'], c['path'])
 
 
 app = Flask(__name__)
+
+def add_slash(s):
+    if len(s) > 0 and s[0] != '/':
+        return '/' + s
+    else:
+        return s
 
 
 @app.route(config['url_prefix'] + '/list', methods=['GET'])
@@ -28,10 +34,7 @@ def fs_list():
     if storage_name is None:
         return 'Missing storage parameter(s)', 400
 
-    subpath = request.args.get('f', '')
-
-    if len(subpath) > 0 and subpath[0] != '/':
-        subpath = '/' + subpath
+    subpath = add_slash(request.args.get('f', ''))
 
     storage = storages.get(storage_name)
     if storage is None:
@@ -70,10 +73,7 @@ def fs_read():
     if file_name is None:
         return 'Missing file parameter(f)', 400
 
-    if file_name[0] != '/':
-        file_name = '/' + file_name
-
-    fullpath = storage.path + file_name
+    fullpath = storage.path + add_slash(file_name)
     if fullpath != os.path.normpath(fullpath):
         return 'Unsupported path symbols', 400
 
@@ -81,3 +81,28 @@ def fs_read():
         return 'File not found '+fullpath, 400
 
     return send_file(fullpath, as_attachment=True)
+
+@app.route(config['url_prefix'] + '/mkdir', methods=['POST'])
+def fs_mkdir():
+    storage_name = request.args.get('s')
+    if storage_name is None:
+        return 'Missing storage parameter(s)', 400
+
+    storage = storages.get(storage_name)
+    if storage is None:
+        return f'Storage "{storage_name}" not found', 400
+    
+    dir_name = request.args.get('f')
+    if dir_name is None:
+        return 'Missing file parameter(f)', 400
+    
+    fullpath = storage.path + add_slash(dir_name)
+    if fullpath != os.path.normpath(fullpath):
+        return 'Unsupported path symbols', 400
+    
+    if os.path.exists(fullpath):
+        return dir_name + " already exists", 400
+    
+    os.mkdir(fullpath)
+
+    return dir_name, 200
