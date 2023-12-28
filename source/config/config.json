@@ -1,17 +1,21 @@
 {
     "url_prefix" : "/fs",
+    "secure" : false,
+    "public_key" : "",
+    "private_key" : "",
+    "host" : "0.0.0.0",
     "storages" : [
         {
             "name" : "test",
             "path" : "/home/user/MyProject/FileServer/docker_app/data",
-            "write_permissions" : "all",
-            "read_permissions" : "all"
+            "write_permissions" : "Admin",
+            "read_permissions" : "Admin"
         },
         {
-            "name" : "project",
-            "path" : "/home/user/MyProject/FileServer",
-            "write_permissions" : "none",
-            "read_permissions" : "all"
+            "name" : "container_test",
+            "path" : "/fileserver/data",
+            "write_permissions" : "Admin",
+            "read_permissions" : "Admin"
         }
     ]
 }

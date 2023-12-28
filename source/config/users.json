@@ -1,0 +1,14 @@
+[
+    {
+        "name": "admin",
+        "auth_method": "password",
+        "password": "admin",
+        "groups": ["Admin"]
+    },
+    {
+        "name": "test",
+        "auth_method": "password",
+        "password": "test",
+        "groups": ["Test"]
+    }
+]

@@ -5,7 +5,8 @@ USER root
 WORKDIR /fileserver
 
 RUN python3 -m pip install --upgrade pip \
-    && pip install Flask 
+    && pip install Flask \
+    && pip install flask_jwt_extended
 
 COPY source/ .
-ENTRYPOINT [ "flask", "--app", "run", "run", "-h", "0.0.0.0" ]
+ENTRYPOINT [ "python3", "-m", "run" ]
